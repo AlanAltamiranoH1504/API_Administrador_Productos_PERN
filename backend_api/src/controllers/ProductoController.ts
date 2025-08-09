@@ -1,5 +1,6 @@
 import Producto from "../models/Producto";
 import producto from "../models/Producto";
+import Categoria from "../models/Categoria";
 
 const accionPrueba = (req, res) => {
     return res.status(200).json({
@@ -10,7 +11,10 @@ const accionPrueba = (req, res) => {
 
 const listProductos = async (req, res) => {
     try {
-        const productosToList = await Producto.findAll({attributes: {exclude: ["createdAt", "updatedAt"]}});
+        const productosToList = await Producto.findAll({
+            attributes: {exclude: ["createdAt", "updatedAt"]},
+            include: {model: Categoria, attributes: ["id", "nombre"]}
+        });
         if (productosToList.length <= 0) {
             return res.status(404).json({
                 status: false,
@@ -35,7 +39,10 @@ const listProductos = async (req, res) => {
 const findById = async (req, res) => {
     try {
         const productoToShow = await Producto.findByPk(req.params.id, {
-            attributes: {exclude: ["createdAt", "updatedAt"]}
+            attributes: {exclude: ["createdAt", "updatedAt"]},
+            include: [
+                {model: Categoria, attributes: ["id", "nombre"]}
+            ]
         });
         if (!productoToShow) {
             return res.status(404).json({
@@ -54,13 +61,14 @@ const findById = async (req, res) => {
 }
 
 const saveProducto = async (req, res) => {
-    const {nombre, descripcion, precio} = req.body;
+    const {nombre, descripcion, precio, categoriaId} = req.body;
     try {
         const productoToSave = await Producto.create({
             nombre,
             descripcion,
             precio,
-            disponible: true
+            disponible: true,
+            categoriaId: categoriaId
         });
 
         return res.status(201).json({
@@ -78,7 +86,7 @@ const saveProducto = async (req, res) => {
 
 const updateProducto = async (req, res) => {
     try {
-        const {nombre, descripcion, precio, disponible} = req.body;
+        const {nombre, descripcion, precio, disponible, categoriaId} = req.body;
         const productoToUpdate = await Producto.findByPk(req.params.id);
         if (!productoToUpdate) {
             return res.status(404).json({
@@ -90,7 +98,8 @@ const updateProducto = async (req, res) => {
             nombre,
             descripcion,
             precio,
-            disponible
+            disponible,
+            categoriaId: categoriaId
         });
 
         return res.status(200).json({

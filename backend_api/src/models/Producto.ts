@@ -1,5 +1,6 @@
-import {Table, Column, DataType} from "sequelize-typescript";
+import {Table, Column, DataType, ForeignKey, BelongsTo} from "sequelize-typescript";
 import {Model} from "sequelize-typescript";
+import Categoria from "./Categoria";
 
 //Nombre de la tabla
 @Table({
@@ -18,5 +19,11 @@ class Producto extends Model {
 
     @Column({type: DataType.BOOLEAN})
     declare disponible: boolean
+
+    //Un producto pertenece a una categoria
+    @ForeignKey(() => Categoria)
+    declare categoriaId: number;
+    @BelongsTo(() => Categoria)
+    declare categoria: Categoria;
 }
 export default Producto;

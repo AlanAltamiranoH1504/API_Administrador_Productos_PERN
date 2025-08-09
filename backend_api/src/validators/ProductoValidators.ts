@@ -1,4 +1,5 @@
 import {body, param, validationResult} from "express-validator";
+import Categoria from "../models/Categoria";
 
 const FindByIdProductoRequest = [
     param("id")
@@ -26,15 +27,28 @@ const CreateProductoRequest = [
         .isFloat({min: 1}).withMessage("El precio del producto debe ser minimo de $1.00"),
     body("disponible")
         .notEmpty().withMessage("El estado de creacion de un producto debe ser disponible"),
+    body("categoriaId")
+        .notEmpty().withMessage("La categoria del producto es obligatoria")
+        .isInt({min: 1}).withMessage("El id de la categoria debe ser un numero mayor a 0"),
 
-    (req, res, next) => {
+    //Busqueda de categoria
+
+    async (req, res, next) => {
         const errores = validationResult(req);
         if (!errores.isEmpty()) {
             return res.status(409).json({
                 errores: errores.array()
             });
         }
+        const categoriaToFind = await Categoria.findByPk(req.body.categoriaId);
+        if (!categoriaToFind) {
+            return res.status(404).json({
+                status: false,
+                message: "Categoria no existente"
+            });
+        }
         next();
+
     }
 ];
 
@@ -52,12 +66,23 @@ const UpdateProductoRequest = [
         .isFloat({min: 1}).withMessage("El precio del producto debe ser minimo de $1.00"),
     body("disponible")
         .notEmpty().withMessage("El estado de creacion de un producto debe ser disponible"),
+    body("categoriaId")
+        .notEmpty().withMessage("La categoria del producto es obligatoria")
+        .isInt({min: 1}).withMessage("El id de la categoria debe ser un numero mayor a 0"),
 
-    (req, res, next) => {
+    async (req, res, next) => {
         const errores = validationResult(req);
         if (!errores.isEmpty()) {
             return res.status(409).json({
                 errores: errores.array()
+            });
+        }
+
+        const categoriaToFind = await Categoria.findByPk(req.body.categoriaId);
+        if (!categoriaToFind) {
+            return res.status(404).json({
+                status: false,
+                message: "Categoria no existente"
             });
         }
         next();
