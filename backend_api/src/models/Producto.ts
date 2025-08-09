@@ -8,15 +8,15 @@ import {Model} from "sequelize-typescript";
 class Producto extends Model {
     //Atributo del modelo
     @Column({type: DataType.STRING})
-    nombre: string;
+    declare nombre: string;
 
     @Column({type: DataType.STRING})
-    descripcion: string
+    declare descripcion: string
 
     @Column({type: DataType.DECIMAL})
-    precio: number
+    declare precio: number
 
     @Column({type: DataType.BOOLEAN})
-    disponible: boolean
+    declare disponible: boolean
 }
 export default Producto;

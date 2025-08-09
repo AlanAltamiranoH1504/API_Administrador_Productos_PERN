@@ -10,6 +10,6 @@ conexionDB.authenticate().then(() => {
 });
 
 //Definicion de routers
-app.use("/producto", productoRouter);
+app.use("/productos", productoRouter);
 
 export default app;
