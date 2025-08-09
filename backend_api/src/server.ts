@@ -1,6 +1,6 @@
 import express from "express";
 const app = express();
-import pruebaRouter from "./routers/PruebaRouter";
+import productoRouter from "./routers/ProductoRouter";
 import conexionDB from "./configuration/db";
 
 app.use(express.json());
@@ -10,6 +10,6 @@ conexionDB.authenticate().then(() => {
 });
 
 //Definicion de routers
-app.use("/prueba", pruebaRouter);
+app.use("/producto", productoRouter);
 
 export default app;

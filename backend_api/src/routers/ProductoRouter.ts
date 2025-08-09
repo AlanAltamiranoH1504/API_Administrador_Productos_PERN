@@ -1,5 +1,5 @@
 import express from "express";
-import {accionPrueba} from "../controllers/PruebaController";
+import {accionPrueba} from "../controllers/ProductoController";
 
 const router = express.Router();
 router.get("/prueba", accionPrueba);
