@@ -46,7 +46,7 @@ import {
  * @swagger
  * /productos:
  *      get:
- *          sumary: Obtiene una lista de productos
+ *          summary: Obtiene una lista de productos
  *          tags:
  *              - Productos
  *          description: Retorna una lista de productos
@@ -68,6 +68,32 @@ import {
 const router = express.Router();
 router.get("/prueba", accionPrueba);
 router.get("", listProductos);
+
+/**
+ * @swagger
+ * /productos/{id}:
+ *      get:
+ *          summary: Obtiene un producto por id
+ *          tags:
+ *              - Productos
+ *          description: Retorna un producto por su id
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                required: true
+ *                schema:
+ *                  type: integer
+ *                description: Id del producto
+ *          responses:
+ *              200:
+ *                  description: Producto encontrado
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/Producto'
+ *              400:
+ *                  description: Producto no encontrado
+ */
 router.get("/:id", FindByIdProductoRequest, findById);
 router.post("", CreateProductoRequest, saveProducto);
 router.put("/:id", UpdateProductoRequest, updateProducto);
