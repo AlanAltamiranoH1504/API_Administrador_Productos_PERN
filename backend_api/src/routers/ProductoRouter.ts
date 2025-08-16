@@ -281,6 +281,32 @@ import {
 
 /**
  * @swagger
+ * /productos/{id}:
+ *      delete:
+ *          summary: Eliminacion de un producto por su id
+ *          tags:
+ *              - Productos
+ *          description: Elimina un producto de la base de datos
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                required: true
+ *                schema:
+ *                  type: integer
+ *                  description: Id del producto
+ *          responses:
+ *              200:
+ *                  description: Producto eliminadi correctamente
+ *              409:
+ *                  description: Conflicto en los parametros de request
+ *              404:
+ *                  description: Producto no encontrado
+ *              500:
+ *                  description: Error en eliminacion de producto
+ */
+
+/**
+ * @swagger
  * /categorias/{id}:
  *      put:
  *          summary: Actualizacion de una categoria por su id
