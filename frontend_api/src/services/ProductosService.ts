@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type {ProductoToSave} from "../types";
-import {responseFindAllProductosSchema} from "../schemas/ProductosSchemas.ts";
+import type {ProductoToSave, ProductoToUpdate} from "../types";
+import {responseFindAllProductosSchema, responseFindProductoByIdSchema} from "../schemas/ProductosSchemas.ts";
 
 export async function saveProductoPOST(data: ProductoToSave) {
     try {
@@ -31,6 +31,30 @@ export async function findByIdProductoGET(id: number) {
     try {
         const url = `http://localhost:3000/productos/${id}`;
         const responseAPI = await axios.get(url);
+        const resultAPI = responseFindProductoByIdSchema.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function updateProductoPUT(data: ProductoToUpdate) {
+    try {
+        const estadoDiponible = data.disponible === 1 ? true : false;
+        const dataNew = {
+            nombre: data.nombre,
+            descripcion: data.descripcion,
+            precio: data.precio,
+            categoriaId: data.categoriaId,
+            disponible: estadoDiponible
+        }
+        const url = `http://localhost:3000/productos/${data.id}`;
+        const responseAPI = await axios.put(url, dataNew);
+        if (responseAPI.status === 200) {
+            console.log("Producto actualizado");
+        }
     } catch (e) {
         throw e;
     }
@@ -40,6 +64,7 @@ export async function deleteProductoDELETE(id: number) {
     try {
         const url = `http://localhost:3000/productos/${id}`;
         const responseAPI = await axios.delete(url);
+        console.log(responseAPI.status)
     } catch (e) {
         throw e;
     }

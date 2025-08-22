@@ -24,7 +24,21 @@ const responseFindAllProductosSchema = z.object({
     )
 });
 
+const responseFindProductoByIdSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),
+    descripcion: z.string(),
+    precio: z.string(),
+    disponible: z.boolean(),
+    categoriaId: z.number(),
+    categoria: z.object({
+        id: z.number(),
+        nombre: z.string(),
+    })
+});
+
 export {
     responseSaveProductoAPI,
-    responseFindAllProductosSchema
+    responseFindAllProductosSchema,
+    responseFindProductoByIdSchema
 }
