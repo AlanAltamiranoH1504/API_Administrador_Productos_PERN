@@ -2,6 +2,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteProductoDELETE, findAllProductosGET, updateDisponibilidadPUT} from "../../services/ProductosService.ts";
 import {toast} from "react-toastify";
+import {formatoMoneda} from "../../helpers";
 
 const ProductosView = () => {
     const queryClient = useQueryClient();
@@ -59,7 +60,12 @@ const ProductosView = () => {
 
                 <Link
                     className="rounded-lg bg-slate-800 p-3 text-sm font-bold text-white uppercase shadow-md hover:bg-slate-700 transition-colors duration-500 cursor-pointer"
-                    to="/productos/nuevo">Agregar Producto</Link>
+                    to="/productos/nuevo">Agregar Producto
+                </Link>
+                <Link
+                    className="rounded-lg bg-slate-800 p-3 text-sm font-bold text-white uppercase shadow-md hover:bg-slate-700 transition-colors duration-500 cursor-pointer"
+                    to="/categorias">Categorias
+                </Link>
             </div>
             <div className="p-2">
                 {data?.total === 0 ? (
@@ -88,7 +94,7 @@ const ProductosView = () => {
                                     {producto.descripcion}
                                 </td>
                                 <td className="p-3 text-lg text-gray-800">
-                                    {producto.precio}
+                                    {formatoMoneda(producto.precio)}
                                 </td>
                                 <td className="p-3 text-lg text-gray-800 ">
                                     {producto.categoria.nombre}
