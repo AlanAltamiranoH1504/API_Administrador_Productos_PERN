@@ -1,15 +1,37 @@
 import {Link} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-import {findAllCategoriasGET} from "../../services/CategoriasService.ts";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {deleteCategoriaDELETE, findAllCategoriasGET} from "../../services/CategoriasService.ts";
 import {formatoFecha} from "../../helpers";
+import {toast} from "react-toastify";
 
 const Categorias = () => {
+    const queryClient = useQueryClient();
     const {data, isLoading, isError} = useQuery({
         queryKey: ["findAllCategorias"],
         queryFn: () => findAllCategoriasGET(),
         retry: false,
         refetchOnWindowFocus: false
     });
+
+    function deleteCategoria(id: number) {
+        deleteCategoriaByIdMutation.mutate(id);
+    }
+
+    const deleteCategoriaByIdMutation = useMutation({
+        mutationKey: ["deleteCategoriaById"],
+        mutationFn: deleteCategoriaDELETE,
+        onSuccess: () => {
+            toast.success("Categoria eliminada correctamente!");
+            queryClient.invalidateQueries({
+                queryKey: ["findAllCategorias"],
+            });
+        },
+        onError: (error) => {
+            // @ts-ignore
+            toast.error(error.response.data.message);
+        }
+    })
+
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -25,7 +47,7 @@ const Categorias = () => {
 
                 <Link
                     className="rounded-lg bg-slate-800 p-3 text-sm font-bold text-white uppercase shadow-md hover:bg-slate-700 transition-colors duration-500 cursor-pointer"
-                    to="/productos/nuevo">Agregar Categoria
+                    to="/categorias/nuevo">Agregar Categoria
                 </Link>
                 <Link
                     className="rounded-lg bg-slate-800 p-3 text-sm font-bold text-white uppercase shadow-md hover:bg-slate-700 transition-colors duration-500 cursor-pointer"
@@ -70,6 +92,7 @@ const Categorias = () => {
                                     </button>
                                     <button
                                         onClick={() => {
+                                            deleteCategoria(categoria.id);
                                         }}
                                         type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

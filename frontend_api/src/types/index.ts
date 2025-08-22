@@ -9,6 +9,10 @@ export type FormSaveProducto = {
     categoriaId: number;
 }
 
+export type FormSaveCategoria = {
+    nombre: string;
+}
+
 export type FormUpdateProducto = {
     nombre: string;
     descripcion: string;
