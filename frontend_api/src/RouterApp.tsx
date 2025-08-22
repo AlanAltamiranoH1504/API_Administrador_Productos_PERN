@@ -6,6 +6,7 @@ import EditProductoView from "./views/productos/EditProductoView.tsx";
 import LayoutCategorias from "./layouts/LayoutCategorias.tsx";
 import Categorias from "./views/categorias/Categorias.tsx";
 import NewCategoriaView from "./views/categorias/NewCategoriaView.tsx";
+import EditCategoriaView from "./views/categorias/EditCategoriaView.tsx";
 const RouterApp = () => {
     return (
         <>
@@ -20,6 +21,7 @@ const RouterApp = () => {
                     <Route element={<LayoutCategorias/>}>
                         <Route path="/categorias" element={<Categorias/>}></Route>
                         <Route path="/categorias/nuevo" element={<NewCategoriaView/>}></Route>
+                        <Route path="/categorias/edit/:id" element={<EditCategoriaView/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

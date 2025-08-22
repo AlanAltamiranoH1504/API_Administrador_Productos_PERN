@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {deleteCategoriaDELETE, findAllCategoriasGET} from "../../services/CategoriasService.ts";
 import {formatoFecha} from "../../helpers";
@@ -6,6 +6,7 @@ import {toast} from "react-toastify";
 
 const Categorias = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     const {data, isLoading, isError} = useQuery({
         queryKey: ["findAllCategorias"],
         queryFn: () => findAllCategoriasGET(),
@@ -81,6 +82,7 @@ const Categorias = () => {
                                 <div className="md:flex md:justify-center md:items-center gap-4">
                                     <button type="button"
                                             onClick={() => {
+                                                navigate(`/categorias/edit/${categoria.id}`);
                                             }}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

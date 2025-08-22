@@ -38,5 +38,10 @@ export type ProductoToUpdate = {
     disponible: number
 }
 
+export type CategoriaToUpdate = {
+    id: number;
+    nombre: string;
+}
+
 export type Categoria = z.infer<typeof responseFindAllCategoriasSchema>
 export type ProductosResponse = z.infer<typeof responseFindAllProductosSchema>
