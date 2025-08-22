@@ -7,7 +7,7 @@ export async function saveProductoPOST(data: ProductoToSave) {
         const url = `http://localhost:3000/productos`;
         const responseAPI = await axios.post(url, data);
         if (responseAPI.status === 201) {
-            console.log("Productos saved successfully.");
+            console.log("");
         }
     } catch (e) {
         throw e;
@@ -42,7 +42,7 @@ export async function findByIdProductoGET(id: number) {
 
 export async function updateProductoPUT(data: ProductoToUpdate) {
     try {
-        const estadoDiponible = data.disponible === 1 ? true : false;
+        const estadoDiponible = data.disponible == 1 ? true : false;
         const dataNew = {
             nombre: data.nombre,
             descripcion: data.descripcion,
@@ -53,8 +53,18 @@ export async function updateProductoPUT(data: ProductoToUpdate) {
         const url = `http://localhost:3000/productos/${data.id}`;
         const responseAPI = await axios.put(url, dataNew);
         if (responseAPI.status === 200) {
-            console.log("Producto actualizado");
+            console.log("");
         }
+    } catch (e) {
+        throw e;
+    }
+}
+
+// @ts-ignore
+export async function updateDisponibilidadPUT(data) {
+    try {
+        const url = `http://localhost:3000/productos/status/${data}`;
+        await axios.put(url, {id: data});
     } catch (e) {
         throw e;
     }

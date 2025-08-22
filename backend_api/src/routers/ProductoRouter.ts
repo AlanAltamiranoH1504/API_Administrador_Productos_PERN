@@ -4,7 +4,7 @@ import {
     deleteProducto, findById,
     listProductos,
     saveProducto,
-    updateProducto
+    updateProducto, updateStatusProducto
 } from "../controllers/ProductoController";
 import {
     CreateProductoRequest,
@@ -347,6 +347,7 @@ router.get("", listProductos);
 router.get("/:id", FindByIdProductoRequest, findById);
 router.post("", CreateProductoRequest, saveProducto);
 router.put("/:id", UpdateProductoRequest, updateProducto);
+router.put("/status/:id", updateStatusProducto);
 router.delete("/:id", DeleteProductoRequest, deleteProducto);
 
 // @ts-ignore

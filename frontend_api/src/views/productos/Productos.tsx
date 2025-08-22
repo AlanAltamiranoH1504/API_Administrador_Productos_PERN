@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {deleteProductoDELETE, findAllProductosGET} from "../../services/ProductosService.ts";
+import {deleteProductoDELETE, findAllProductosGET, updateDisponibilidadPUT} from "../../services/ProductosService.ts";
 import {toast} from "react-toastify";
 
 const ProductosView = () => {
@@ -18,6 +18,11 @@ const ProductosView = () => {
         deleteProductoMutation.mutate(id);
     }
 
+    // @ts-ignore
+    function changeDisponibilidad(data) {
+        updateStatusProductoMutation.mutate(data);
+    }
+
     const deleteProductoMutation = useMutation({
         mutationKey: ["deleteProductoById"],
         mutationFn: deleteProductoDELETE,
@@ -32,6 +37,20 @@ const ProductosView = () => {
             toast.error(error.response.data.error);
         }
     });
+
+    const updateStatusProductoMutation = useMutation({
+        mutationKey: ["updateStatus"],
+        mutationFn: updateDisponibilidadPUT,
+        onSuccess: () => {
+            toast.success("Estado actualizado");
+            queryClient.invalidateQueries({
+                queryKey: ["findAllProductos"]
+            });
+        },
+        onError: () => {
+            toast.error("Error en cambio de estado");
+        }
+    })
 
     return (
         <>
@@ -75,14 +94,21 @@ const ProductosView = () => {
                                     {producto.categoria.nombre}
                                 </td>
                                 <td className="p-3 text-lg text-gray-800 ">
-                                    {producto.disponible}
+                                    <button
+                                        onClick={() => {
+                                            changeDisponibilidad(producto.id);
+                                        }}
+                                        className={producto.disponible === true ? "bg-green-500 py-1 px-2 text-white font-semibold text-sm rounded-lg hover:bg-green-600 transition-colors duration-500"
+                                            : "bg-red-600 py-1 px-2 text-white text-sm rounded-lg font-semibold hover:bg-red-700 transition-colors duration-500"}>
+                                        {producto.disponible === true ? "Disponible" : "No Disponible"}
+                                    </button>
                                 </td>
                                 <td className="p-3 text-lg text-gray-800 ">
                                     <div className="md:flex md:justify-center md:items-center gap-4">
                                         <button type="button"
-                                            onClick={() => {
-                                                navigate(`/productos/edit/${producto.id}`);
-                                            }}
+                                                onClick={() => {
+                                                    navigate(`/productos/edit/${producto.id}`);
+                                                }}
                                         >
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                  stroke-width="1.5" stroke="currentColor"

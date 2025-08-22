@@ -116,6 +116,24 @@ const updateProducto = async (req, res) => {
     }
 }
 
+const updateStatusProducto = async (req, res) => {
+    try {
+        const productoToUpdate = await Producto.findByPk(req.body.id);
+        productoToUpdate.disponible = !productoToUpdate.disponible;
+        await productoToUpdate.save();
+        return res.status(200).json({
+            status: true,
+            message: "Estado de producto actualizado correctamente"
+        });
+    } catch (e) {
+        return res.status(500).json({
+            status: false,
+            message: "Ocurrio un error en el cambio de estado del producto",
+            error: e.message
+        });
+    }
+}
+
 const deleteProducto = async (req, res) => {
     try {
         const productoToDelete = await Producto.findByPk(req.params.id);
@@ -145,5 +163,6 @@ export {
     findById,
     saveProducto,
     updateProducto,
-    deleteProducto
+    deleteProducto,
+    updateStatusProducto
 }

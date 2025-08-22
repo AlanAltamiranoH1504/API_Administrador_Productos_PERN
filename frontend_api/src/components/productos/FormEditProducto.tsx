@@ -33,6 +33,7 @@ const FormEditProducto = () => {
             precio: data.precio,
             disponible: data.disponibilidad
         }
+        // console.log(dataWithId)
         updateProductoMutation.mutate(dataWithId);
     }
 
